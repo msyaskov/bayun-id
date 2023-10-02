@@ -32,6 +32,9 @@ public class WebSecurityConfiguration {
                 authorize.anyRequest().authenticated()
         );
 
+        SocialLoginConfiguration socialLoginConfiguration = new SocialLoginConfiguration();
+        http.apply(socialLoginConfiguration);
+
         http.formLogin(withDefaults());
 
         return http.build();
