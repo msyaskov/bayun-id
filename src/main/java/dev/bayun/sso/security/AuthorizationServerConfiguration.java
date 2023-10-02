@@ -31,8 +31,6 @@ import java.time.temporal.ChronoUnit;
 @EnableConfigurationProperties(AuthorizationServerProperties.class)
 public class AuthorizationServerConfiguration {
 
-    private final PasswordEncoder passwordEncoder;
-
     private final AuthorizationServerProperties authorizationServerProperties;
 
     @Bean
@@ -43,27 +41,6 @@ public class AuthorizationServerConfiguration {
                 exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
 
         return http.build();
-    }
-
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        return new InMemoryRegisteredClientRepository(
-                RegisteredClient.withId("oauthdebugger")
-                        .clientName("oauthdebugger")
-                        .clientId("oauthdebugger")
-                        .clientSecret(passwordEncoder.encode("oauthdebugger"))
-                        .redirectUri("https://oauthdebugger.com/debug")
-                        .scope("profile")
-                        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                        .tokenSettings(TokenSettings.builder()
-                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-                                .accessTokenTimeToLive(Duration.of(30, ChronoUnit.MINUTES))
-                                .refreshTokenTimeToLive(Duration.of(12, ChronoUnit.HOURS))
-                                .reuseRefreshTokens(false)
-                                .authorizationCodeTimeToLive(Duration.of(30, ChronoUnit.SECONDS))
-                                .build())
-                        .build());
     }
 
     @Bean
