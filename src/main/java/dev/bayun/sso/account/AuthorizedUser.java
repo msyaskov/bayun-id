@@ -12,19 +12,13 @@ import java.util.UUID;
 @Getter
 public class AuthorizedUser extends User implements OAuth2User {
 
-    private final UUID id;
-
-    public AuthorizedUser(UUID id, String email, Collection<? extends GrantedAuthority> authorities) {
-        this(id, email, true, true, true, true, authorities);
+    public AuthorizedUser(UUID id, String password, Collection<? extends GrantedAuthority> authorities,
+            boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, boolean enabled) {
+        super(id.toString(), password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public AuthorizedUser(UUID id, String email, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(email, "", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return this.getUsername();
+    public UUID getAccountId() {
+        return UUID.fromString(this.getUsername());
     }
 
     @Override
