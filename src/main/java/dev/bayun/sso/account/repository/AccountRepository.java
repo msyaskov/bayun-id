@@ -1,15 +1,15 @@
 package dev.bayun.sso.account.repository;
 
-import dev.bayun.sso.account.AccountEntity;
+import dev.bayun.sso.account.Account;
 
 import java.util.UUID;
 
 public interface AccountRepository {
 
-    AccountEntity getByEmail(String email);
+    Account getByEmail(String email);
 
-    AccountEntity getById(UUID id);
+    Account getById(UUID id);
 
-    AccountEntity save(AccountEntity entity);
+    Account save(Account entity);
 
 }
