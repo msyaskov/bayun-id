@@ -75,7 +75,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         entity.setEmail(oAuth2User.getAttribute("default_email"));
         entity.setFirstName(oAuth2User.getAttribute("first_name"));
         entity.setLastName(oAuth2User.getAttribute("last_name"));
-        entity.setPictureUrl(String.format("https://avatars.yandex.net/get-yapic/%s/islands-200", oAuth2User.getAttribute("default_avatar_id")));
+        entity.setPictureUrl(String.format("https://avatars.yandex.net/get-yapic/%s/islands-200", oAuth2User.getAttribute("default_avatar_id").toString()));
 
         return entity;
     }
