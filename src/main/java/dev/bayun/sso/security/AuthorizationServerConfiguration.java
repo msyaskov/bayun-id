@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -29,9 +30,8 @@ import java.time.temporal.ChronoUnit;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(AuthorizationServerProperties.class)
+@Import(InMemoryRegisteredClientRepositoryConfiguration.class)
 public class AuthorizationServerConfiguration {
-
-    private final PasswordEncoder passwordEncoder;
 
     private final AuthorizationServerProperties authorizationServerProperties;
 
@@ -43,27 +43,6 @@ public class AuthorizationServerConfiguration {
                 exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")));
 
         return http.build();
-    }
-
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        return new InMemoryRegisteredClientRepository(
-                RegisteredClient.withId("oauthdebugger")
-                        .clientName("oauthdebugger")
-                        .clientId("oauthdebugger")
-                        .clientSecret(passwordEncoder.encode("oauthdebugger"))
-                        .redirectUri("https://oauthdebugger.com/debug")
-                        .scope("profile")
-                        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                        .tokenSettings(TokenSettings.builder()
-                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-                                .accessTokenTimeToLive(Duration.of(30, ChronoUnit.MINUTES))
-                                .refreshTokenTimeToLive(Duration.of(12, ChronoUnit.HOURS))
-                                .reuseRefreshTokens(false)
-                                .authorizationCodeTimeToLive(Duration.of(30, ChronoUnit.SECONDS))
-                                .build())
-                        .build());
     }
 
     @Bean
