@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class MapAccountRepository implements AccountRepository {
@@ -13,15 +14,15 @@ public class MapAccountRepository implements AccountRepository {
     private final Map<String, Account> entityEmailMap = new HashMap<>();
 
     @Override
-    public Account getByEmail(String email) {
+    public Optional<Account> findByEmail(String email) {
         Assert.notNull(email, "An email must not be null");
-        return entityEmailMap.get(email);
+        return Optional.ofNullable(entityEmailMap.get(email));
     }
 
     @Override
-    public Account getById(UUID id) {
+    public Optional<Account> findById(UUID id) {
         Assert.notNull(id, "An id must not be null");
-        return entityIdMap.get(id);
+        return Optional.ofNullable(entityIdMap.get(id));
     }
 
     @Override
