@@ -43,6 +43,10 @@ public class AccountEntity {
     private boolean enabled;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (authorities == null) {
+            return new HashSet<>();
+        }
+        
         return authorities.getAuthorities();
     }
 
