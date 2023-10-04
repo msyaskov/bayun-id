@@ -6,6 +6,7 @@ import jakarta.persistence.Converter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Converter
+@Component
 public class AuthoritiesConverter implements AttributeConverter<Authorities, String> {
 
     private static final String DELIMITER = ", ";

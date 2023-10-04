@@ -1,6 +1,6 @@
 package dev.bayun.sso.account;
 
-import dev.bayun.sso.entity.DefaultCoreEntity;
+import dev.bayun.sso.core.entity.DefaultCoreEntity;
 import dev.bayun.sso.security.Authorities;
 import dev.bayun.sso.util.converter.AuthoritiesConverter;
 import jakarta.persistence.*;
@@ -9,8 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Setter

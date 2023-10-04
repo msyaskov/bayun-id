@@ -2,7 +2,7 @@ package dev.bayun.sso.account;
 
 import dev.bayun.sso.account.repository.AccountRepository;
 import dev.bayun.sso.security.Authorities;
-import dev.bayun.sso.security.OAuth2Provider;
+import dev.bayun.sso.security.oauth.OAuth2Provider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+/**
+ * @author Максим Яськов
+ */
 
 @Service
 @AllArgsConstructor

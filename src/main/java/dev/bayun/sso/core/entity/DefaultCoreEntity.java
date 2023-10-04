@@ -1,4 +1,4 @@
-package dev.bayun.sso.entity;
+package dev.bayun.sso.core.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

@@ -6,6 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Максим Яськов
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

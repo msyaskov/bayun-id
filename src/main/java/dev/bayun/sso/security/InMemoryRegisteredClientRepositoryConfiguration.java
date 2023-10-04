@@ -15,13 +15,15 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-@Configuration
+/**
+ * @author Максим Яськов
+ */
+
 @RequiredArgsConstructor
 public class InMemoryRegisteredClientRepositoryConfiguration {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Bean
     public RegisteredClientRepository inMemoryRegisteredClientRepository() {
         return new InMemoryRegisteredClientRepository(
                 RegisteredClient.withId("test-client-id")

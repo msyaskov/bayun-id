@@ -1,4 +1,4 @@
-package dev.bayun.sso.security;
+package dev.bayun.sso.security.oauth.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

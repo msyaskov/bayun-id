@@ -1,4 +1,8 @@
-package dev.bayun.sso.security;
+package dev.bayun.sso.security.oauth;
+
+/**
+ * @author Максим Яськов
+ */
 
 public enum OAuth2Provider {
     GOOGLE,
