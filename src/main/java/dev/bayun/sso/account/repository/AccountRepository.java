@@ -2,13 +2,14 @@ package dev.bayun.sso.account.repository;
 
 import dev.bayun.sso.account.Account;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AccountRepository {
 
-    Account getByEmail(String email);
+    Optional<Account> findByEmail(String email);
 
-    Account getById(UUID id);
+    Optional<Account> findById(UUID id);
 
     Account save(Account entity);
 

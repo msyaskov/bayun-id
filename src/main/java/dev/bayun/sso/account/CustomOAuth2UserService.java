@@ -1,7 +1,8 @@
 package dev.bayun.sso.account;
 
 import dev.bayun.sso.account.repository.AccountRepository;
-import dev.bayun.sso.security.OAuth2Provider;
+import dev.bayun.sso.security.Authorities;
+import dev.bayun.sso.security.oauth.OAuth2Provider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -10,8 +11,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.UUID;
+
+/**
+ * @author Максим Яськов
+ */
 
 @Service
 @AllArgsConstructor
@@ -25,13 +29,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Provider provider = OAuth2Provider.getByName(userRequest.getClientRegistration().getRegistrationId());
 
         String email = obtainEmail(oAuth2User, provider);
-        Account account = accountRepository.getByEmail(email);
-        if (account == null) {
-            account = obtainAccount(oAuth2User, provider);
-            account = accountRepository.save(account);
-        }
+        Account account = accountRepository.findByEmail(email)
+                .orElseGet(() -> register(oAuth2User, provider));
 
         return AuthorizedUserMapper.map(account);
+    }
+
+    private Account register(OAuth2User oAuth2User, OAuth2Provider provider) {
+        return accountRepository.save(obtainAccount(oAuth2User, provider));
     }
 
     protected String obtainEmail(OAuth2User oAuth2User, OAuth2Provider provider) {
@@ -47,8 +52,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             case YANDEX -> obtainAccountFromYandex(oAuth2User);
         };
 
-        account.setAuthorities(Collections.emptySet());
+        account.setAuthorities(Authorities.empty());
         account.setCreationDate(LocalDateTime.now());
+        account.setLastUpdateDate(LocalDateTime.now());
         account.setCredentialExpired(false);
         account.setEnabled(true);
         account.setExpired(false);

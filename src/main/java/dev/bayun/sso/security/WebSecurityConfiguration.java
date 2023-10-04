@@ -1,5 +1,6 @@
 package dev.bayun.sso.security;
 
+import dev.bayun.sso.security.oauth.SocialLoginConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +20,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
  * @author Максим Яськов
  */
 
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Configuration(proxyBeanMethods = false)
 public class WebSecurityConfiguration {
-
-    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -38,16 +37,6 @@ public class WebSecurityConfiguration {
         http.formLogin(withDefaults());
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService users() {
-        UserDetails user = User.builder()
-                .username("default")
-                .passwordEncoder(passwordEncoder::encode)
-                .password("default")
-                .build();
-        return new InMemoryUserDetailsManager(user);
     }
 
 }

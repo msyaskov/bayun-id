@@ -1,7 +1,6 @@
-package dev.bayun.sso.security;
+package dev.bayun.sso.security.oauth;
 
 import lombok.Setter;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

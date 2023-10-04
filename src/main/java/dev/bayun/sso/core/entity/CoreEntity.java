@@ -1,4 +1,4 @@
-package dev.bayun.sso.entity;
+package dev.bayun.sso.core.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

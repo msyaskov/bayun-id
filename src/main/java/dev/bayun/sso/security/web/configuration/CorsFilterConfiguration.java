@@ -1,4 +1,4 @@
-package dev.bayun.sso.security;
+package dev.bayun.sso.security.web.configuration;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
