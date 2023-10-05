@@ -37,9 +37,9 @@ function nameFull(name: string): string | undefined {
     }
 }
 
-const usernameRegExp = new RegExp("^(?!.*_{2}.*)[a-zA-Zа-яёЁА-Я\\d_]{1,30}$")
+const usernameRegExp = new RegExp("^(?!.*_{2}.*)\\w{1,30}$")
 const usernameToUnderlinesRexExp = new RegExp("^(?!.*_{2}.*).*$")
-const usernameAlphabetRegExp = new RegExp('^[a-zA-Zа-яёЁА-Я\\d_]+$')
+const usernameAlphabetRegExp = new RegExp('^\\w+$')
 function usernameQuick(username: string): string | undefined {
     if (username.length === 0) {
         return 'Обязательное поле'
