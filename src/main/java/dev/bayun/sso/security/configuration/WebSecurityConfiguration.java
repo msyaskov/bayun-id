@@ -30,7 +30,10 @@ public class WebSecurityConfiguration {
         SocialLoginConfiguration socialLoginConfiguration = new SocialLoginConfiguration();
         http.apply(socialLoginConfiguration);
 
-        http.formLogin(withDefaults());
+        http.oauth2Login(customizer -> {
+            customizer.loginPage("/login");
+        });
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
