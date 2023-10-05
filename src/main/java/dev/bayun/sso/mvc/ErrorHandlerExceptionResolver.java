@@ -71,7 +71,7 @@ public class ErrorHandlerExceptionResolver implements HandlerExceptionResolver, 
 
         ModelAndView mav;
         if (isHtmlAcceptable(request)) {
-            mav = new ModelAndView("error");
+            mav = new ModelAndView("error.html");
         } else {
             mav = new ModelAndView(new MappingJackson2JsonView());
         }

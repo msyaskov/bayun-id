@@ -9,7 +9,7 @@ public class TestController {
 
     @GetMapping(path = "/test")
     public String test(Authentication authentication) {
-        return authentication != null ? authentication.toString() : "null";
+        throw new RuntimeException();
     }
 
 }

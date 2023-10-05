@@ -1,10 +1,16 @@
 import {SvgGoogleLogo, SvgLogo, SvgYandexLogo} from "../../components/svg";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // @ts-ignore
 const OAuth2Clients = import.meta.env.VITE_OAUTH2_CLIENTS.split(',')
 
 const LoginRoute = () => {
     return <>
+        <HelmetProvider>
+            <Helmet>
+                <title>Login - Bayun</title>
+            </Helmet>
+        </HelmetProvider>
         <div className="hero min-h-screen">
             <div className="hero-content w-full xs:w-xs flex flex-col items-center sm:border sm:rounded-3xl sm:shadow-lg pt-8 px-4 pb-4 gap-6">
                     <SvgLogo className='w-40 h-40'/>

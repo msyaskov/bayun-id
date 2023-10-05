@@ -1,12 +1,14 @@
-import {Outlet} from "react-router";
 import {SelfAccountContextProvider} from "./use-self-account";
 import MainPage from "./MainPage";
+import {ErrorPageContextProvider} from "../../pages/error/use-error-page";
 
 const MainRoute = () => {
     return <>
-        <SelfAccountContextProvider>
-            <MainPage/>
-        </SelfAccountContextProvider>
+        <ErrorPageContextProvider>
+            <SelfAccountContextProvider>
+                <MainPage/>
+            </SelfAccountContextProvider>
+        </ErrorPageContextProvider>
     </>
 }
 
