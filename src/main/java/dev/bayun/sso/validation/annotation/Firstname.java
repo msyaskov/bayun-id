@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Validation(validators = FirstnameValidator.class)
 public @interface Firstname {
 
-	String DEFAULT_REGEXP = "^(?=.{1,30}$)(?!.*[ \\-.',]{2})[a-zA-Z]+([a-zA-Z \\-.',]*[a-zA-Z]+)*$";
+	String DEFAULT_REGEXP = "^(?=.{1,30}$)(?!.*[ \\-.',]{2})[a-zа-яёЁA-ZА-Я]+([a-zа-яёЁA-ZА-Я \\-.',]*[a-zа-яёЁA-ZА-Я]+)*$";
 
 	boolean required() default true;
 
