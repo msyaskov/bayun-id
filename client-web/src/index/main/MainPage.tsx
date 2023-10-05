@@ -1,8 +1,16 @@
 import useSelfAccount, {SelfAccount, SelfAccountContextType} from "./use-self-account";
 import {SvgGoogleLogo, SvgLogo, SvgYandexLogo} from "../../components/svg";
-import {ChangeEvent, useEffect, useState} from "react";
-import axios, {AxiosError} from "axios";
+import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import validation from "../../api/validation";
+import BaseResponse from "../../api/BaseResponse";
+import ErrorBody, {createUnknownError, errorCreator} from "../../api/ErrorBody";
+import ErrorResponse from "../../api/ErrorResponse";
+import ResultResponse from "../../api/ResultResponse";
+import Response from "../../api/Response";
+import useErrorPage from "../../pages/error/use-error-page";
+import handle from "../../util/ResponseHandler";
+import ErrorType from "../../api/ErrorType";
 
 const MainSkeletonPage = () => {
     return <>
@@ -11,6 +19,8 @@ const MainSkeletonPage = () => {
 }
 
 const MainPageSelf = (props: {self: SelfAccountContextType}) => {
+
+    const ErrorPage = useErrorPage()
 
     const [username, setUsername] = useState<string>(props.self.username)
     const [usernameError, setUsernameError] = useState<string | undefined>(undefined)
@@ -42,12 +52,11 @@ const MainPageSelf = (props: {self: SelfAccountContextType}) => {
         setLastNameError(validationResult)
     }
 
-    const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
-    useEffect(() => {
-        setSubmitDisabled(props.self.username === username
-            && props.self.firstName === firstName
-            && props.self.lastName === lastName)
-    }, [props.self, username, firstName, lastName])
+    function isSubmitDisabled() {
+        return props.self.username === username
+                && props.self.firstName === firstName
+                && props.self.lastName === lastName
+    }
 
     function onLogOut() {
         axios.post('/api/logout').then(() => {
@@ -55,7 +64,7 @@ const MainPageSelf = (props: {self: SelfAccountContextType}) => {
         })
     }
 
-    function onSave() {
+    async function onSave() {
         const usernameValidationResult = validation.username.full(username)
         const firstNameValidationResult = validation.name.full(firstName)
         const lastNameValidationResult = validation.name.full(lastName)
@@ -72,19 +81,31 @@ const MainPageSelf = (props: {self: SelfAccountContextType}) => {
         // @ts-ignore
         const path = import.meta.env.VITE_SELF_PATH
 
-        axios.patch(path, data, {
+        const ar = await axios.patch<Response, AxiosResponse<Response>>(path, data, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-        }).then(() => props.self.update().then(s => {
-            setUsername(s.username)
-            setFirstName(s.firstName)
-            setLastName(s.lastName)
-        }))
-            .catch((e: AxiosError) => {
-                console.error(e)
-                return
-            })
+        })
+
+        handle(ar, result => {
+            setUsername(result.username)
+            setFirstName(result.firstName)
+            setLastName(result.lastName)
+            props.self.update()
+        }, ErrorPage, errorBody => {
+            if (errorBody.type === ErrorType.INVALID_REQUEST_PARAM && errorBody.parameters) {
+                for (let param of errorBody.parameters) {
+                    if (param === 'username') {
+                        setUsernameError('Не подойдет')
+                    } else if (param === 'firstName') {
+                        setFirstNameError('Не подойдет')
+                    } else if (param === 'lastName') {
+                        setLastNameError('Не подойдет')
+                    }
+                }
+            }
+            return false
+        })
     }
 
     return <>
@@ -135,7 +156,7 @@ const MainPageSelf = (props: {self: SelfAccountContextType}) => {
                                 <span className="label-text-alt text-sm text-error">{usernameError}</span>
                             </label>}
                         </div>
-                        <button className="btn btn-neutral normal-case font-normal text-lg" disabled={false} onClick={onSave}>Сохранить</button>
+                        <button className="btn btn-neutral normal-case font-normal text-lg" disabled={isSubmitDisabled()} onClick={onSave}>Сохранить</button>
                     </div>
                 </div>
                 <div className='w-full px-4'>

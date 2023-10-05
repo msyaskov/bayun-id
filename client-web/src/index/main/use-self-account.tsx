@@ -1,7 +1,12 @@
-import {createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState} from "react";
-import axios, {AxiosError, AxiosResponse} from "axios";
-import config from "tailwindcss/defaultConfig";
-import BaseResponse from "../../api/BaseResponse";
+import {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
+import axios, {AxiosResponse} from "axios";
+import useErrorPage from "../../pages/error/use-error-page";
+import Response from "../../api/Response";
+import {createInternalError, createServiceUnavailableError, createUnknownError} from "../../api/ErrorBody";
+import handle from "../../util/ResponseHandler";
+
+// @ts-ignore
+const SELF_PATH = import.meta.env.VITE_SELF_PATH
 
 export type SelfAccountMutableData = {
     username: string
@@ -16,7 +21,7 @@ export type SelfAccount = SelfAccountMutableData & {
 }
 
 export type SelfAccountContextType = SelfAccount & {
-    update: () => Promise<SelfAccount>
+    update: (self?: SelfAccount) => Promise<SelfAccount>
 }
 
 const SelfAccountContext = createContext<SelfAccountContextType | undefined>(undefined)
@@ -26,21 +31,24 @@ export const SelfAccountContextProvider = (props: PropsWithChildren) => {
     // @ts-ignore
     const [self, setSelf] = useState<SelfAccount>(null)
 
-    async function update(): Promise<SelfAccount> {
-        console.log("update")
+    async function update(sa?: SelfAccount): Promise<SelfAccount> {
+        if (sa) {
+            setSelf(sa)
+            return sa
+        }
 
-        // @ts-ignore
-        const path = import.meta.env.VITE_SELF_PATH
+        const ar = await axios.get<Response<SelfAccount>, AxiosResponse<Response<SelfAccount>>>(SELF_PATH)
+        if (ar.request.responseURL.includes('/login')) {
+            window.location.replace('/login')
+        }
 
-        const response = await axios.get(path)
-
-        setSelf(response.data.result)
-
-        return response.data.result;
+        return handle(ar, result => {
+            setSelf(result)
+            return result
+        })
     }
 
     useEffect(() => {
-        console.log("effect")
         update()
     }, [])
 

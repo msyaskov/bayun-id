@@ -1,6 +1,5 @@
-type BaseResponse<T = any> = {
+type BaseResponse = {
     ok: boolean
-    result: T
 }
 
 export default BaseResponse

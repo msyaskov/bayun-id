@@ -6,6 +6,9 @@ import IndexRoute from "./index/IndexRoute";
 import LoginRoute from "./index/login/LoginRoute";
 import MainRoute from "./index/main/MainRoute";
 import ErrorPage from "./pages/error/ErrorPage";
+import axios from "axios";
+
+axios.defaults.validateStatus = () => true
 
 const router = createBrowserRouter([{
     id: 'index',
