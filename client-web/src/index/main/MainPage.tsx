@@ -156,11 +156,11 @@ const MainPageSelf = (props: {self: SelfAccountContextType}) => {
                                 <span className="label-text-alt text-sm text-error">{usernameError}</span>
                             </label>}
                         </div>
-                        <button className="btn btn-neutral normal-case font-normal text-lg" disabled={isSubmitDisabled()} onClick={onSave}>Сохранить</button>
+                        <div className='grid grid-cols-2 gap-2'>
+                            <button className="btn btn-ghost text-error btn-outline hover:bg-error hover:border-error hover:text-white normal-case text-lg font-normal w-full rounded-r-none" onClick={onLogOut}>Выход</button>
+                            <button className="btn btn-neutral normal-case font-normal text-lg rounded-l-none" disabled={isSubmitDisabled()} onClick={onSave}>Сохранить</button>
+                        </div>
                     </div>
-                </div>
-                <div className='w-full px-4'>
-                    <button onClick={onLogOut} className="btn btn-ghost text-error btn-outline hover:bg-error hover:border-error hover:text-white normal-case text-lg font-normal w-full">Выход</button>
                 </div>
             </div>
         </div>

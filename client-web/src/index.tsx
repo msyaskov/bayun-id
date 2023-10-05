@@ -7,6 +7,7 @@ import LoginRoute from "./index/login/LoginRoute";
 import MainRoute from "./index/main/MainRoute";
 import ErrorPage from "./pages/error/ErrorPage";
 import axios from "axios";
+import WidgetRoute from "./index/widget/WidgetRoute";
 
 axios.defaults.validateStatus = () => true
 
@@ -23,9 +24,9 @@ const router = createBrowserRouter([{
         path: '/main',
         element: <MainRoute/>
     }, {
-        id: 'error',
-        path: '/error',
-        element: <ErrorPage errorBody={{status: 404, type: 'NOT_FOUND', description: 'The requested resource is not found.', timestamp: 1696518924}}/>
+        id: 'widget',
+        path: '/widget',
+        element: <WidgetRoute/>
     }]
 }])
 
