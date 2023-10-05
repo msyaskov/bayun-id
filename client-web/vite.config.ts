@@ -10,6 +10,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: './index.html',
+        error: './error.html',
       },
       output: {
         entryFileNames: `assets/[hash].js`,

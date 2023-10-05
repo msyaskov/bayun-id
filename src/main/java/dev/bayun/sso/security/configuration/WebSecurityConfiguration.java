@@ -4,6 +4,7 @@ import dev.bayun.sso.oauth.configuration.SocialLoginConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,7 +25,9 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize ->
-                authorize.anyRequest().authenticated()
+                authorize.requestMatchers(HttpMethod.GET, "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/assets/**").permitAll()
+                        .anyRequest().authenticated()
         );
 
         SocialLoginConfiguration socialLoginConfiguration = new SocialLoginConfiguration();
