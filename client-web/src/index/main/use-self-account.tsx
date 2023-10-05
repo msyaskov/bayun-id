@@ -34,6 +34,8 @@ export const SelfAccountContextProvider = (props: PropsWithChildren) => {
 
         const response = await axios.get(path)
 
+        setSelf(response.data.result)
+
         return response.data.result;
     }
 
