@@ -5,11 +5,15 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import IndexRoute from "./index/IndexRoute";
 import LoginRoute from "./index/login/LoginRoute";
 import MainRoute from "./index/main/MainRoute";
-import ErrorPage from "./pages/error/ErrorPage";
 import axios from "axios";
 import WidgetRoute from "./index/widget/WidgetRoute";
 
 axios.defaults.validateStatus = () => true
+
+const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="_csrf"]')?.content
+console.log('_csrf', csrfToken)
+axios.defaults.headers.post['X-CSRF-TOKEN'] = csrfToken
+axios.defaults.headers.patch['X-CSRF-TOKEN'] = csrfToken
 
 const router = createBrowserRouter([{
     id: 'index',

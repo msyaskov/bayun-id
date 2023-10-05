@@ -2,9 +2,11 @@ package dev.bayun.sso.security.configuration;
 
 import dev.bayun.sso.oauth.configuration.SocialLoginConfiguration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,6 +24,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfiguration {
+
+    @Value("${spring.security.enable-csrf:true}")
+    private boolean csrfEnabled;
 
     @Bean
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -41,7 +46,12 @@ public class WebSecurityConfiguration {
             customizer.logoutRequestMatcher(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/logout"));
         });
         http.formLogin(AbstractHttpConfigurer::disable);
-        http.csrf(AbstractHttpConfigurer::disable);
+
+        if (csrfEnabled) {
+            http.csrf(Customizer.withDefaults());
+        } else {
+            http.csrf(AbstractHttpConfigurer::disable);
+        }
 
         return http.build();
     }

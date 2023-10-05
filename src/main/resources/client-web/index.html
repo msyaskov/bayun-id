@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>Bayun</title>
-    <script type="module" crossorigin src="/assets/38a36170.js"></script>
+    <meta th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:content="${_csrf.token}"/>
+    <script type="module" crossorigin src="/assets/cf7effb5.js"></script>
     <link rel="stylesheet" href="/assets/5e5f6c42.css">
   </head>
   <body class='h-full bg-white'>
