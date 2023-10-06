@@ -26,10 +26,9 @@ import java.util.Set;
 @Component
 public class RegisteredClientEntityConverter implements EntityConverter<RegisteredClientEntity, RegisteredClient> {
 
-    @Qualifier("oAuth2ObjectMapper")
     private final ObjectMapper objectMapper;
 
-    public RegisteredClientEntityConverter(ObjectMapper objectMapper) {
+    public RegisteredClientEntityConverter(@Qualifier("oAuth2ObjectMapper") ObjectMapper objectMapper) {
         Assert.notNull(objectMapper, "an objectMapper must not be null");
         this.objectMapper = objectMapper;
     }

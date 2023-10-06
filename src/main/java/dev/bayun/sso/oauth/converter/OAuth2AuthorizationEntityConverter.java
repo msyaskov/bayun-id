@@ -30,12 +30,11 @@ public class OAuth2AuthorizationEntityConverter implements EntityConverter<OAuth
 
     private static final String SCOPE_DELIMITER = ",";
 
-    @Qualifier("oAuth2ObjectMapper")
     private final ObjectMapper objectMapper;
 
     private final RegisteredClientRepository registeredClientRepository;
 
-    public OAuth2AuthorizationEntityConverter(ObjectMapper objectMapper, RegisteredClientRepository registeredClientRepository) {
+    public OAuth2AuthorizationEntityConverter(@Qualifier("oAuth2ObjectMapper") ObjectMapper objectMapper, RegisteredClientRepository registeredClientRepository) {
         Assert.notNull(objectMapper, "an objectMapper must not be null");
         Assert.notNull(registeredClientRepository, "a registeredClientRepository must not be null");
 
