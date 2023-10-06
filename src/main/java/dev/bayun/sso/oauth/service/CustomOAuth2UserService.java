@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -87,7 +88,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         entity.setEmail(oAuth2User.getAttribute("default_email"));
         entity.setFirstName(oAuth2User.getAttribute("first_name"));
         entity.setLastName(oAuth2User.getAttribute("last_name"));
-        entity.setPictureUrl(String.format("https://avatars.yandex.net/get-yapic/%s/islands-200", oAuth2User.getAttribute("default_avatar_id")));
+
+        String pictureAttr = oAuth2User.getAttribute("default_avatar_id");
+        entity.setPictureUrl(String.format("https://avatars.yandex.net/get-yapic/%s/islands-200", pictureAttr));
 
         return entity;
     }
