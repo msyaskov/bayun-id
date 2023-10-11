@@ -31,7 +31,7 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize ->
-                authorize.requestMatchers(HttpMethod.GET, "/login").permitAll()
+                authorize.requestMatchers(HttpMethod.GET, "/login", "/api/user-info/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/assets/**").permitAll()
                         .anyRequest().authenticated()
         );

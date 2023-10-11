@@ -14,6 +14,7 @@ public class AccountEntityToPrincipalDtoConverter implements Converter<AccountEn
         return PrincipalDto.builder()
                 .id(source.getId())
                 .email(source.getEmail())
+                .username(source.getUsername())
                 .firstName(source.getFirstName())
                 .lastName(source.getLastName())
                 .pictureUrl(source.getPictureUrl())

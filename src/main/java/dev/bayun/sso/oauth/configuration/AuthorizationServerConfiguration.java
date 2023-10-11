@@ -1,8 +1,8 @@
 package dev.bayun.sso.oauth.configuration;
 
 import dev.bayun.sso.account.entity.AccountEntity;
-import dev.bayun.sso.security.AuthorizedUser;
 import dev.bayun.sso.account.repository.AccountRepository;
+import dev.bayun.api.sso.AuthenticatedPrincipal;
 import dev.bayun.sso.oauth.dto.PrincipalDto;
 import dev.bayun.sso.oauth.dto.TokenInfoDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -90,7 +90,7 @@ public class AuthorizationServerConfiguration {
             if (tokenAuth != null) {
                 Authentication attributeAuth = tokenAuth.getAttribute(principalAttributeKey);                               // Если найден этот объект OAuth2Authorization, то получаем из него объект Authentication следующим образом
                 if (attributeAuth != null) {
-                    accountRepository.findById(((AuthorizedUser) attributeAuth.getPrincipal()).getAccountId())
+                    accountRepository.findById(((AuthenticatedPrincipal) attributeAuth.getPrincipal()).getId())
                             .map(accountEntityToPrincipalDtoConverter::convert)
                             .ifPresent(principalDto -> tokenInfoDtoBuilder.principal(principalDto)
                                     .authorities(authentication.getAuthorities()));

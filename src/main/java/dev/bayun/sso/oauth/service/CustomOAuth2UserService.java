@@ -2,9 +2,8 @@ package dev.bayun.sso.oauth.service;
 
 import dev.bayun.sso.account.entity.AccountEntity;
 import dev.bayun.sso.account.repository.AccountRepository;
-import dev.bayun.sso.oauth.converter.AccountEntityToAuthorizedUserConverter;
+import dev.bayun.api.sso.AuthenticatedPrincipal;
 import dev.bayun.sso.oauth.OAuth2Provider;
-import dev.bayun.sso.security.AuthorizedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -28,7 +26,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final AccountRepository accountRepository;
 
-    private final Converter<AccountEntity, AuthorizedUser> accountEntityToAuthorizedUserConverter;
+    private final Converter<AccountEntity, AuthenticatedPrincipal> accountEntityToAuthenticatedPrincipalConverter;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -39,7 +37,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         AccountEntity accountEntity = accountRepository.findByEmail(email)
                 .orElseGet(() -> register(oAuth2User, provider));
 
-        return accountEntityToAuthorizedUserConverter.convert(accountEntity);
+        return accountEntityToAuthenticatedPrincipalConverter.convert(accountEntity);
     }
 
     private AccountEntity register(OAuth2User oAuth2User, OAuth2Provider provider) {

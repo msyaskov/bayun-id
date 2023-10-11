@@ -2,7 +2,7 @@ package dev.bayun.sso.security.aspect;
 
 import dev.bayun.sso.account.AccountService;
 import dev.bayun.sso.account.entity.AccountEntity;
-import dev.bayun.sso.security.AuthorizedUser;
+import dev.bayun.api.sso.AuthenticatedPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -48,8 +48,8 @@ public class InjectSelfAspect {
 
     private AccountEntity obtainAccountFromSecurityContextHolder() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof OAuth2AuthenticationToken oauth && oauth.getPrincipal() instanceof AuthorizedUser user) {
-            return accountService.getById(user.getAccountId());
+        if (authentication instanceof OAuth2AuthenticationToken oauth && oauth.getPrincipal() instanceof AuthenticatedPrincipal principal) {
+            return accountService.getById(principal.getId());
         } else {
             return null;
         }

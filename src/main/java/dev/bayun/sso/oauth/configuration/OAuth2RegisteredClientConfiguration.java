@@ -31,6 +31,8 @@ public class OAuth2RegisteredClientConfiguration {
     @Profile("oauth2-test-client")
     public void onApplicationStarted(ApplicationStartedEvent event) {
         registerTestClient();
+        registerApiGatewayClient();
+        registerVoteWebClient();
     }
 
     private void registerTestClient() {
@@ -45,6 +47,43 @@ public class OAuth2RegisteredClientConfiguration {
                     .scope("profile")
                     .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                     .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                    .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                    .tokenSettings(defaultTokenSettings())
+                    .build());
+        }
+
+    }
+
+    private void registerApiGatewayClient() {
+        RegisteredClient savedClient = registeredClientRepository.findByClientId("bayun-api-gateway-oauth-client");
+        if (savedClient == null) {
+            registeredClientRepository.save(RegisteredClient.withId("bayun-api-gateway-oauth-client-id")
+                    .clientName("Test Client")
+                    .clientId("bayun-api-gateway-oauth-client")
+                    .clientIdIssuedAt(Instant.now())
+                    .clientSecret(passwordEncoder.encode("secret"))
+                    .redirectUri("http://api.bayun.localhost:8082/login/oauth2/code/bayun-api-gateway-oauth-client")
+                    .scope("scope_pro_file")
+                    .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                    .tokenSettings(defaultTokenSettings())
+                    .build());
+        }
+
+    }
+
+    private void registerVoteWebClient() {
+        RegisteredClient savedClient = registeredClientRepository.findByClientId("bayun-sso-vote-web-client");
+        if (savedClient == null) {
+            registeredClientRepository.save(RegisteredClient.withId("bayun-sso-vote-web-client-id")
+                    .clientName("BayunVoteWebClient")
+                    .clientId("bayun-sso-vote-web-client")
+                    .clientIdIssuedAt(Instant.now())
+                    .clientSecret(passwordEncoder.encode("secret"))
+                    .redirectUri("http://vote.bayun.localhost:8091/login/oauth2/code/bayun-sso-vote-web-client")
+                    .scope("sso_profile")
+                    .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                     .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                     .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                     .tokenSettings(defaultTokenSettings())
