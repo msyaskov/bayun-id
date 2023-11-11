@@ -1,0 +1,81 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka
+spring:
+  application:
+    name: 'id'
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${spring.datasource.host}/${spring.datasource.database}
+    host: 192.168.0.3:5432
+    username: user
+    password: pass
+    database: id_db
+  data:
+    redis:
+      host: 192.168.0.3
+      port: 6379
+      password: #
+      username: default
+  session:
+    redis:
+      repository-type: indexed
+      flush-mode: immediate
+      namespace: spring:session
+  security:
+    oauth2:
+      authorizationserver:
+        issuer-url: 'https://id.bayun.dev'
+      client:
+        provider:
+          yandex:
+            authorization-uri: https://oauth.yandex.ru/authorize
+            token-uri: https://oauth.yandex.ru/token
+            user-name-attribute: default_email
+            user-info-uri: https://login.yandex.ru/info
+        registration:
+          google:
+            client-id: #
+            client-secret: #
+            redirect-uri: https://id.bayun.dev/login/oauth2/code/google
+            scope:
+              - email
+              - profile
+          yandex:
+            provider: yandex
+            client-id: #
+            client-secret: #
+            authorization-grant-type: authorization_code
+            redirect-uri: https://id.bayun.dev/login/oauth2/code/yandex
+oauth2:
+  client:
+    api-forms:
+      client-id: api-forms
+      client-secret: secret
+      client-authentication-method: client_secret_basic
+      authorization-grant-type:
+        - authorization_code
+        - refresh_token
+      redirect-uri:
+        - https://forms.bayun.dev/login/oauth2/code/bayun
+      scope:
+        - openid
+        - profile
+      token:
+        access-token-format: self-contained
+        access-token-lifetime: PT30M
+        refresh-token-lifetime: P1D
+        refresh-token-reuse: false
+        authorization-code-lifetime: PT30M
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 7d
+logging:
+  level:
+    root: TRACE
